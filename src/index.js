@@ -38,7 +38,7 @@ class Main extends React.Component {
 		}
 		this.setState({
 			gridFull: gridCopy,
-      isFinished: false
+      isFinished: false,
 		});
 	}
 
