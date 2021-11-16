@@ -30,6 +30,8 @@ class Buttons extends React.Component {
 					<button className="btn btn-default" onClick={this.props.seed}>
 					  Seed
 					</button>
+
+          {/* try */}
           {/* <DropdownButton id="dropdown-item-button" title="Dropdown button">
             <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText>
             <Dropdown.Item as="button">Action</Dropdown.Item>
