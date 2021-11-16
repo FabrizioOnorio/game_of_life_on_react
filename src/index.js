@@ -1,114 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { ButtonToolbar, Dropdown } from 'react-bootstrap';
+import Grid from "./components/Grid";
+import Buttons from "./components/Buttons";
 
-class Box extends React.Component {
-  selectBox = () => {
-    this.props.selectBox(this.props.row, this.props.col)
-  }
-
-  render() {
-    return (
-      <div className={this.props.boxClass}
-            id={this.props.id}
-            onClick={this.selectBox}>
-
-      </div>
-    );
-  }
-}
-
-class Grid extends React.Component {
-  render() {
-    const width = this.props.cols * 14;
-    var rowsArr = []
-
-    var boxClass = "";
-    for (var i = 0; i < this.props.rows; i++) {
-      for (var j = 0; j < this.props.rows; j++) {
-        let boxId = i + "_" + j;
-
-        boxClass = this.props.gridFull[i][j] ? "box on" : "box off";
-        rowsArr.push(
-          <Box
-            boxClass={boxClass}
-            key={boxId}
-            box={boxId}
-            row={i}
-            col={j}
-            selectBox={this.props.selectBox}
-            />
-        );
-      }
-
-    }
-    return (
-      <div className="grid" style={{width: width}}>
-        {rowsArr}
-      </div>
-    )
-  }
-}
-
-class Buttons extends React.Component {
-
-  handleSelect = (evt) => {
-    this.props.gridSize(evt);
-  }
-
-  render() {
-    return (
-      <div className="center">
-        <ButtonToolbar>
-					<button className="btn btn-default" onClick={this.props.playButton}>
-						Play
-					</button>
-					<button className="btn btn-default" onClick={this.props.pauseButton}>
-					  Pause
-					</button>
-					<button className="btn btn-default" onClick={this.props.clear}>
-					  Clear
-					</button>
-					<button className="btn btn-default" onClick={this.props.slow}>
-					  Slow
-					</button>
-					<button className="btn btn-default" onClick={this.props.fast}>
-					  Fast
-					</button>
-					<button className="btn btn-default" onClick={this.props.seed}>
-					  Seed
-					</button>
-					<Dropdown>
-            <Dropdown.Toggle
-						title="Grid Size"
-						id="size-menu"
-						onSelect={this.handleSelect}
-					>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="1">20x10</Dropdown.Item>
-              <Dropdown.Item eventKey="2">50x30</Dropdown.Item>
-              <Dropdown.Item eventKey="3">70x50</Dropdown.Item>
-            </Dropdown.Menu>
-				  </Dropdown>
-
-        </ButtonToolbar>
-      </div>
-    )
-  }
-}
 
 class Main extends React.Component {
   constructor() {
     super();
-    this.speed = 100;
-    this.rows = 30;
-    this.cols = 50;
+    this.speed = 1000;
+    this.rows = 10;
+    this.cols = 30;
 
     this.state = {
       generation: 0,
-      gridFull: Array(this.rows).fill().map(() => Array(this.cols).fill(false))
+      gridFull: Array(this.rows).fill().map(() => Array(this.cols).fill(false)),
+      isFinished: false,
     }
   }
 
@@ -154,10 +61,11 @@ class Main extends React.Component {
   }
 
   clear = () => {
-    var grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+    const grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
     this.setState({
       gridFull: grid,
-      generation: 0
+      generation: 0,
+      isFinished: false,
     })
   }
 
@@ -198,15 +106,22 @@ class Main extends React.Component {
 		    if (!g[i][j] && count === 3) g2[i][j] = true;
 		  }
 		}
-		this.setState({
-		  gridFull: g2,
-		  generation: this.state.generation + 1
-		});
+
+    if (isArrayEqual(g, g2)) {
+
+      clearInterval(this.intervalId)
+      this.setState({isFinished: true})
+
+    } else {
+          this.setState({
+            gridFull: g2,
+            generation: this.state.generation + 1,
+          });
+        }
   }
 
   componentDidMount() {
     this.seed();
-    this.playButton();
   }
 
   render() {
@@ -228,10 +143,14 @@ class Main extends React.Component {
         cols={this.cols}
         selectBox={this.selectBox}
         />
-        <h2>Generations: {this.state.generation}</h2>
+        { this.state.isFinished ? <h2>The Game is Over</h2> : <h2>Generations: {this.state.generation}</h2>}
       </div>
     );
   }
+}
+
+function  isArrayEqual(array1, array2) {
+  return JSON.stringify(array1) === JSON.stringify(array2)
 }
 
 function arrayClone(arr) {
