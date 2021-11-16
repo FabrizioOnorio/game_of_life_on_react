@@ -38,6 +38,7 @@ class Main extends React.Component {
 		}
 		this.setState({
 			gridFull: gridCopy,
+      generation: 0,
       isFinished: false,
 		});
 	}
