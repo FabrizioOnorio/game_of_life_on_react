@@ -28,6 +28,7 @@ class Main extends React.Component {
   }
 
   seed = () => {
+    clearInterval(this.intervalId)
 		let gridCopy = arrayClone(this.state.gridFull);
 		for (let i = 0; i < this.rows; i++) {
 			for (let j = 0; j < this.cols; j++) {
@@ -63,6 +64,7 @@ class Main extends React.Component {
   }
 
   clear = () => {
+    clearInterval(this.intervalId)
     const grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
     this.setState({
       gridFull: grid,
