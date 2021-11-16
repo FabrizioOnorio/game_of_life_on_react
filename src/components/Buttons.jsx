@@ -36,7 +36,7 @@ class Buttons extends React.Component {
             <Dropdown.Item as="button">Another action</Dropdown.Item>
             <Dropdown.Item as="button">Something else</Dropdown.Item>
           </DropdownButton> */}
-					<Dropdown>
+					{/* <Dropdown>
             <Dropdown.Toggle
 						title="Grid Size"
 						id="size-menu"
@@ -48,7 +48,7 @@ class Buttons extends React.Component {
               <Dropdown.Item eventKey="2">50x30</Dropdown.Item>
               <Dropdown.Item eventKey="3">70x50</Dropdown.Item>
             </Dropdown.Menu>
-				  </Dropdown>
+				  </Dropdown> */}
 
         </ButtonToolbar>
       </div>
