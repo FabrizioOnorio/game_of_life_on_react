@@ -69,23 +69,23 @@ class Main extends React.Component {
     })
   }
 
-  gridSize = (size) => {
-    switch (size) {
-      case "1":
-        this.cols = 20
-        this.rows = 10
-      break;
-      case "2":
-        this.cols = 50
-        this.rows = 30
-      break;
-      case "3":
-        this.cols = 70
-        this.rows = 50
-      break;
-    }
-    this.clear();
-  }
+  // gridSize = (size) => {
+  //   switch (size) {
+  //     case "1":
+  //       this.cols = 20
+  //       this.rows = 10
+  //     break;
+  //     case "2":
+  //       this.cols = 50
+  //       this.rows = 30
+  //     break;
+  //     case "3":
+  //       this.cols = 70
+  //       this.rows = 50
+  //     break;
+  //   }
+  //   this.clear();
+  // }
 
   play = () => {
     let g = this.state.gridFull;
