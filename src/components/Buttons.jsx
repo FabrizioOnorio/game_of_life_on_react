@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonToolbar, Dropdown } from 'react-bootstrap';
+import { ButtonToolbar } from 'react-bootstrap';
 
 class Buttons extends React.Component {
 
