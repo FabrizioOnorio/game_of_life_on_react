@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Grid from "./components/Grid";
 import Buttons from "./components/Buttons";
+import LowButtons from "./components/LowButtons";
 
 
 class Main extends React.Component {
@@ -16,6 +17,7 @@ class Main extends React.Component {
       generation: 0,
       gridFull: Array(this.rows).fill().map(() => Array(this.cols).fill(false)),
       isFinished: false,
+      isRunning: false,
     }
   }
 
@@ -47,6 +49,9 @@ class Main extends React.Component {
   playButton = () => {
     clearInterval(this.intervalId)
     this.intervalId = setInterval(this.play, this.speed)
+    this.setState({
+      isRunning: true,
+    })
   }
 
   pauseButton = () => {
@@ -70,26 +75,39 @@ class Main extends React.Component {
       gridFull: grid,
       generation: 0,
       isFinished: false,
+      isRunning: false,
     })
   }
 
-  // gridSize = (size) => {
-  //   switch (size) {
-  //     case "1":
-  //       this.cols = 20
-  //       this.rows = 10
-  //     break;
-  //     case "2":
-  //       this.cols = 50
-  //       this.rows = 30
-  //     break;
-  //     case "3":
-  //       this.cols = 70
-  //       this.rows = 50
-  //     break;
-  //   }
-  //   this.clear();
-  // }
+  gridSizeSmall = async () => {
+    this.cols = 8;
+    this.rows = 5;
+    const grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+    await this.setState ({
+      gridFull: grid,
+    })
+    this.seed();
+  }
+
+  gridSizeMedium = async () => {
+    this.cols = 30;
+    this.rows = 10;
+    const grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+    await this.setState ({
+      gridFull: grid,
+    })
+    this.seed();
+  }
+
+  gridSizeBig = async () => {
+    this.cols = 40;
+    this.rows = 20;
+    const grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+    await this.setState ({
+      gridFull: grid,
+    })
+    this.seed();
+  }
 
   play = () => {
     let g = this.state.gridFull;
@@ -139,19 +157,25 @@ class Main extends React.Component {
           fast={this.fast}
           clear={this.clear}
           seed={this.seed}
-          gridSize={this.gridSize}
         />
         <Grid
-        gridFull={this.state.gridFull}
-        rows={this.rows}
-        cols={this.cols}
-        selectBox={this.selectBox}
+          gridFull={this.state.gridFull}
+          rows={this.rows}
+          cols={this.cols}
+          selectBox={this.selectBox}
+        />
+        <LowButtons
+          gridSizeSmall={this.gridSizeSmall}
+          gridSizeMedium={this.gridSizeMedium}
+          gridSizeBig={this.gridSizeBig}
         />
         { this.state.isFinished ? <h2>The Game is Over</h2> : <h2>Generations: {this.state.generation}</h2>}
       </div>
     );
   }
 }
+
+
 
 function  isArrayEqual(array1, array2) {
   return JSON.stringify(array1) === JSON.stringify(array2)
